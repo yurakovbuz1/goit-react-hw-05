@@ -8,4 +8,9 @@
 
 .mainContainer {
   margin-top: 25px;
+  display: flex;
+}
+
+.descriprion {
+  margin-left: 50px;
 }

@@ -1,0 +1,31 @@
+.form {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  font-size: x-large;
+}
+
+.searchField {
+  width: 360px;
+  height: 30px;
+  background-color: #fff;
+  margin-right: 10px;
+  color: black;
+  font-size: large;
+}
+
+.searchButton {
+  cursor: pointer;
+  color: black;
+  font-weight: 700;
+  padding: 8px;
+  border: 1.5px solid black;
+  border-radius: 5px;
+  background-color: white;
+  font-size: large;
+}
+
+.searchButton:hover {
+  background-color: black;
+  color: white;
+}
