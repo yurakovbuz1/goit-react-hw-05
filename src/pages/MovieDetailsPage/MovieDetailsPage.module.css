@@ -1,0 +1,11 @@
+.goBack {
+  padding: 10px;
+  text-decoration: none;
+  background-color: black;
+  color: white;
+  border-radius: 3px;
+}
+
+.mainContainer {
+  margin-top: 25px;
+}
