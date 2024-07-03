@@ -1,17 +1,24 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import css from './MovieDetailsPage.module.css'
+import { useEffect } from 'react';
 
 
 const MovieDetailsPage = () => {
     const imageUrl = 'https://image.tmdb.org/t/p/w500/';
     const { state } = useLocation();
-    console.log('state.image :>> ', state.image);
+    const navigate = useNavigate();
     
-    
+    console.log('state :>> ', state);
+    useEffect(() => {
+        if (!state) navigate('/movies');
+    }, [state, navigate])
+    if (!state) {
+        return null;
+    }
 
     return (
         <>
-            <Link to={state.homePage ? '/' : '/movies'} className={css.goBack}>Go back</Link>
+            <Link to={state.homePage ? '/' : `/movies/${state.search}`} className={css.goBack}>Go back</Link>
             <div className={css.mainContainer}>
                 <img src={imageUrl + state.img} alt={state.title} />
                 <div className={css.descriprion}>
