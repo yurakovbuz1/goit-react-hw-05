@@ -15,7 +15,6 @@ const MovieDetailsPage = () => {
     const backLocation = (state ? (state.search ? `/movies/${state.search}` : '/') : '/');
     const { movieId } = useParams();
     const detailsUrl = `https://api.themoviedb.org/3/movie/${movieId}`;
-    let castPressed = false;
 
     useEffect(() => {
         const fetchMovies = async () => {

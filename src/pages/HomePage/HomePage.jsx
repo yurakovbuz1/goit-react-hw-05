@@ -36,14 +36,6 @@ const HomePage = () => {
         fetchMovies()
 
     }, [])
-
-    // const getMovieGenres = (genre_ids) => {
-    //     const selectedGenres = genre_ids.map((genreId) => {
-    //         const genre = genres.find((genre) => genreId === genre.id)
-    //         return genre ? genre.name : null
-    //     }).filter((name) => name !== null).join(', ');
-    //     return selectedGenres;
-    // }
     
     return (
         
