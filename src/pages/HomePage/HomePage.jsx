@@ -13,6 +13,7 @@ const HomePage = () => {
     const [genres, setGenres] = useState([]);
     const [isLoading, setLoading] = useState(false);
     const [isError, setError] = useState(false);
+    const [params, setParams] = useSearchParams();
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -25,6 +26,7 @@ const HomePage = () => {
                     accept: 'application/json'
                 }
             })
+            console.log('data :>> ', data.results);
             setMovies(data.results);
         }
         catch (e) {
