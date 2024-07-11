@@ -3,7 +3,8 @@ import SearchBar from '../../components/SearchBar/SearchBar';
 import css from './MoviesPage.module.css'
 import Loader from '../../components/Loader/Loader';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import NotFoundPage from '../NotFoundPage/NotFoundPage';
 
 
 const MoviesPage = () => {
@@ -14,6 +15,9 @@ const MoviesPage = () => {
     const [query, setQuery] = useState([])
     const [isLoading, setLoading] = useState(false);
     const [isError, setError] = useState(false);
+    const location = useLocation();
+
+    const [params, setParams] = useSearchParams();
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -26,12 +30,11 @@ const MoviesPage = () => {
                         accept: 'application/json'
                     },
                     params: {
-                        query,
+                        query: params.get("filter"),
                         include_adult: false,
                         language: 'en - US',
                     }
                 })
-                console.log('data :>> ', data.results);
                 setMovies(data.results);
             }
             catch (e) {
@@ -64,46 +67,43 @@ const MoviesPage = () => {
         fetchMovies()
         // fetchGenres()
         
-    }, [query])
+    }, [params])
+
 
     const handleSubmit = (searchQuery) => {
-        console.log('searchQuery :>> ', searchQuery);
         if (searchQuery !== query) {
             setMovies([]);
-            
-            setQuery(searchQuery);
-            
+            setQuery(params.get('filter'));
         }
     }
-    
-    const getMovieGenres = (genre_ids) => {
-        const selectedGenres = genre_ids.map((genreId) => {
-            const genre = genres.find((genre) => genreId === genre.id)
-            return genre ? genre.name : null
-        }).filter((name) => name !== null).join(', ');
-        return selectedGenres;
+
+    const handleOnChange = ({target : {value}}) => {
+        params.set('filter', value)
+        setParams(params)
     }
 
     return (
         <>
-            <SearchBar onSubmit={handleSubmit} />
+            <SearchBar onSubmit={handleSubmit} onChange={handleOnChange} params={params} />
+            {isError ? <p>Sorry, something went wrong.. please try again</p> :
+                <ul>
+                    {movies.map((movie) =>
+                        <li key={movie.id}>
+                            <Link to={String(movie.id)} state={{
+                                title: movie.title,
+                                year: movie.release_date.substring(0, 4),
+                                overview: movie.overview,
+                                vote: (movie.vote_average * 10),
+                                // genres: getMovieGenres(movie.genre_ids),
+                                img: movie.poster_path,
+                                search: location.search,
+                                homePage: false
+                            }} className={css.movieLink}>{movie.title}</Link>
+                        </li>
+                    )}
+                </ul>
+            }
             {isLoading && <Loader />}
-            <ul>
-                {movies.map((movie) =>
-                    <li key={movie.id}>
-                        <Link to={`/movies/${movie.id}`} state={{
-                            title: movie.title,
-                            year: movie.release_date.substring(0, 4),
-                            overview: movie.overview,
-                            vote: (movie.vote_average * 10),
-                            genres: getMovieGenres(movie.genre_ids),
-                            img: movie.poster_path,
-                            homePage: false
-                        }} className={css.movieLink}>{movie.title}</Link>
-                    </li>
-                )}
-            </ul>
-
         </>
     )
 }
