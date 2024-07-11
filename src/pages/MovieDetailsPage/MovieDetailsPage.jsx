@@ -1,7 +1,9 @@
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 import css from './MovieDetailsPage.module.css'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import Loader from '../../components/Loader/Loader';
+import NotFoundPage from '../NotFoundPage/NotFoundPage';
 
 
 const MovieDetailsPage = () => {
@@ -10,8 +12,10 @@ const MovieDetailsPage = () => {
     const [isLoading, setLoading] = useState(false);
     const [isError, setError] = useState(false);
     const { state } = useLocation();
+    const backLocation = (state ? (state.search ? `/movies/${state.search}` : '/') : '/');
     const { movieId } = useParams();
     const detailsUrl = `https://api.themoviedb.org/3/movie/${movieId}`;
+    let castPressed = false;
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -36,28 +40,40 @@ const MovieDetailsPage = () => {
         fetchMovies()
 
     }, [detailsUrl])
+
     return (
         <>
-            <Link to={state ? (state.search ? `/movies/${state.search}` : '/') : '/'} className={css.goBack}>Go back</Link>
-            {details && (<div className={css.mainContainer}>
-                <img src={imageUrl + details.poster_path} alt={details.title} />
-                <div className={css.descriprion}>
-                    <h2>{details.title} ({details.release_date.substring(0, 4)})</h2>
-                    <p>User score: {details.vote_average * 10}%</p>
-                    <p><b>Overview</b></p>
-                    <p>{details.overview}</p>
-                    <p><b>Genres</b></p>
-                    <p>{details.genres.map((genre)=> genre.name).join(', ')}</p>
+            <Link to={backLocation} className={css.goBack}>
+                Go back
+            </Link>
+            {isError && <NotFoundPage />} 
+            {details && ( 
+                <div>
+                    <div className={css.mainContainer}>
+                        <img src={imageUrl + details.poster_path} alt={details.title} />
+                        <div className={css.description}>
+                            <h2>{details.title} ({details.release_date?.substring(0, 4)})</h2>
+                            <p>User score: {details.vote_average * 10}%</p>
+                            <p><b>Overview</b></p>
+                            <p>{details.overview}</p>
+                            <p><b>Genres</b></p>
+                            <p>{details.genres.map((genre) => genre.name).join(', ')}</p>
+                        </div>
+                    </div>
+                    <hr />
+                    <ul>
+                        <li><Link to='cast' className={css.additionalInfo}>Cast</Link></li>
+                        <li><Link to='reviews' className={css.additionalInfo}>Reviews</Link></li>
+                    </ul>
+                    <hr />
+                    <Outlet />
                 </div>
-            </div>
+            
             )}
-            <div className="addContainer">
-                {/* <Link to={}>Cast</Link> */}
-
-            </div>
-
+            {isLoading && <Loader />} 
         </>
-    )
+);
+
 }
 
 export default MovieDetailsPage;

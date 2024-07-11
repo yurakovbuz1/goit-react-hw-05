@@ -3,6 +3,7 @@ import css from './HomePage.module.css'
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Loader from '../../components/Loader/Loader';
+import NotFoundPage from '../NotFoundPage/NotFoundPage';
 
 
 const HomePage = () => {
@@ -48,7 +49,7 @@ const HomePage = () => {
         
         <>
             {isLoading && <Loader/>}
-            {isError ? <p>Sorry, something went wrong.. please try again</p> : 
+            {isError ? <NotFoundPage/> : 
             <div>
             <h2>Trending movies</h2>
                 <ul>
