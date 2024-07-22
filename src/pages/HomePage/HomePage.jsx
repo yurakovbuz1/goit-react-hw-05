@@ -1,9 +1,9 @@
 import axios from 'axios';
 import css from './HomePage.module.css'
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import Loader from '../../components/Loader/Loader';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
+import MovieList from '../../components/MovieList/MovieList';
 
 
 const HomePage = () => {
@@ -37,23 +37,15 @@ const HomePage = () => {
 
     }, [])
     
-    return (
-        
+    return (        
         <>
-            {isLoading && <Loader/>}
-            {isError ? <NotFoundPage/> : 
-            <div>
-            <h2>Trending movies</h2>
-                <ul>
-                    {movies.map((movie) =>
-                        <li key={movie.id}>
-                            <Link to={`/movies/${movie.id}`} className={css.movieLink}>{movie.title}</Link>
-                        </li>
-                    )}
-                </ul>
-            </div>
+            {isLoading && <Loader />}            
+            {isError ? <NotFoundPage /> :                 
+                <div>                    
+                    <h2>Trending movies</h2>
+                    <MovieList movies={movies} from={'/'} />
+                </div>                
             }
-
         </>
     )
 }

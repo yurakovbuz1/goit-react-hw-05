@@ -5,6 +5,7 @@ import Loader from '../../components/Loader/Loader';
 import axios from 'axios';
 import { Link, useSearchParams } from 'react-router-dom';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
+import MovieList from '../../components/MovieList/MovieList';
 
 
 const MoviesPage = () => {
@@ -58,15 +59,17 @@ const MoviesPage = () => {
         <>
             <SearchBar onSubmit={handleSubmit} params={params} />
             {isError ? <NotFoundPage /> :
-                <ul>
-                    {movies.map((movie) =>
-                        <li key={movie.id}>
-                            <Link to={`/movies/${movie.id}`} state={{
-                                search: location.search,
-                            }} className={css.movieLink}>{movie.title}</Link>
-                        </li>
-                    )}
-                </ul>
+                <MovieList movies={movies} from={'/movies' + location.search} />
+                
+                // <ul>
+                //     {movies.map((movie) =>
+                //         <li key={movie.id}>
+                //             <Link to={`/movies/${movie.id}`} state={{
+                //                 search: location.search,
+                //             }} className={css.movieLink}>{movie.title}</Link>
+                //         </li>
+                //     )}
+                // </ul>
             }
             {isLoading && <Loader />}
 

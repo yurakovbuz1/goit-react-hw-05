@@ -11,10 +11,11 @@ const MovieDetailsPage = () => {
     const [details, setDetails] = useState();
     const [isLoading, setLoading] = useState(false);
     const [isError, setError] = useState(false);
-    const { state } = useLocation();
-    const backLocation = (state ? (state.search ? `/movies/${state.search}` : '/') : '/');
+    const location = useLocation();
+    const backLink = location.state?.from ?? '/';
     const { movieId } = useParams();
     const detailsUrl = `https://api.themoviedb.org/3/movie/${movieId}`;
+
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -42,7 +43,7 @@ const MovieDetailsPage = () => {
 
     return (
         <>
-            <Link to={backLocation} className={css.goBack}>
+            <Link to={backLink} className={css.goBack}>
                 Go back
             </Link>
             {isError && <NotFoundPage />} 
