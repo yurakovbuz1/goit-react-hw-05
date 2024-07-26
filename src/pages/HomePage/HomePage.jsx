@@ -1,5 +1,4 @@
 import axios from 'axios';
-import css from './HomePage.module.css'
 import { useEffect, useState } from 'react';
 import Loader from '../../components/Loader/Loader';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
@@ -34,7 +33,6 @@ const HomePage = () => {
         }
         }
         fetchMovies()
-
     }, [])
     
     return (        
